@@ -7,7 +7,8 @@ echo "Job started: $(date)"
 DATE=$(date +%Y%m%d_%H%M%S)
 FILE="/dump/$PREFIX-$DATE.sql"
 
-pg_dump -h "$PGHOST" -p "$PGPORT" -U "$PGUSER" -f "$FILE" -d "$PGDB" 
+# echo pg_dump -h "$PGHOST" -p "$PGPORT" -U "$PGUSER" -f "$FILE" -d "$PGDB" -Fc
+pg_dump -h "$PGHOST" -p "$PGPORT" -U "$PGUSER" -f "$FILE" -d "$PGDB" -Fc
 gzip "$FILE"
 
 if [ ! -z "$DELETE_OLDER_THAN" ]; then
