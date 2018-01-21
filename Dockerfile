@@ -8,6 +8,9 @@ RUN apt-get update && \
 ADD dump.sh /dump.sh
 RUN chmod +x /dump.sh
 
+ADD restore.sh /restore.sh
+RUN chmod +x /restore.sh
+
 ADD start.sh /start.sh
 RUN chmod +x /start.sh
 

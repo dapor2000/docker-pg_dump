@@ -15,8 +15,6 @@ else
   ECHO_CRONFILE=false
 fi
 
-
-
 if [[ "$COMMAND" == 'dump' ]]; then
     exec /dump.sh
 elif [[ "$COMMAND" == 'dump-cron' ]]; then
@@ -40,6 +38,11 @@ elif [[ "$COMMAND" == 'dump-cron' ]]; then
     fi
     cron
     tail -f "$LOGFIFO"
+
+elif [[ "$COMMAND" == 'restore' ]]; then
+
+  exec /restore.sh $2
+
 else
     echo "Unknown command $COMMAND"
     echo "Available commands: dump, dump-cron"
