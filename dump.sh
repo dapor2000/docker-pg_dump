@@ -16,6 +16,7 @@ if [ ! -z "$DELETE_OLDER_THAN" ]; then
 	find /dump/* -mmin "+$DELETE_OLDER_THAN" -exec rm {} \;
 fi
 
-
+LATEST_BACKUP_DATE=$(date +%Y-%m-%dT%H:%M:%S%z)
+echo $LATEST_BACKUP_DATE > /status/latest_backup_date
 
 echo "Job finished: $(date)"

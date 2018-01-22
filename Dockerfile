@@ -15,6 +15,7 @@ ADD start.sh /start.sh
 RUN chmod +x /start.sh
 
 VOLUME /dump
+VOLUME /status
 
 ENTRYPOINT ["/start.sh"]
 CMD [""]
