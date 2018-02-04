@@ -3,6 +3,7 @@ MAINTAINER Cristoffer Fairweather <cfairweather@annixa.com> # Previously Ilya St
 
 RUN apt-get update && \
     apt-get install -y cron && \
+    apt-get install -y gpg && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
 ADD dump.sh /dump.sh
@@ -20,6 +21,7 @@ RUN chmod +x /start.sh
 VOLUME /dump
 VOLUME /weekly
 VOLUME /status
+VOLUME /keys
 
 ENTRYPOINT ["/start.sh"]
 CMD [""]

@@ -6,6 +6,7 @@ COMMAND=${1:-dump}
 CRON_SCHEDULE=${CRON_SCHEDULE:-0 1 * * *}
 WEEKLY_CRON_SCHEDULE=${WEEKLY_CRON_SCHEDULE:-0 1 * * sun}
 DELETE_WEEKLY_OLDER_THAN_DAYS=${DELETE_WEEKLY_OLDER_THAN_DAYS:-90}
+KEY_NAME=${KEY_NAME:backup_key}
 PREFIX=${PREFIX:-dump}
 PGUSER=${PGUSER:-postgres}
 PGDB=${PGDB:-postgres}
@@ -17,6 +18,11 @@ else
   ECHO_CRONFILE=false
 fi
 
+# import keys
+if [ -f /keys/backup.pub ]; then
+  gpg --import /keys/backup.pub
+fi
+
 if [[ "$COMMAND" == 'dump' ]]; then
     exec /dump.sh
 elif [[ "$COMMAND" == 'dump-cron' ]]; then
@@ -24,7 +30,7 @@ elif [[ "$COMMAND" == 'dump-cron' ]]; then
     if [[ ! -e "$LOGFIFO" ]]; then
         mkfifo "$LOGFIFO"
     fi
-    CRON_ENV="PREFIX='$PREFIX'\nPGUSER='$PGUSER'\nPGDB='$PGDB'\nPGHOST='$PGHOST'\nPGPORT='$PGPORT'"
+    CRON_ENV="PREFIX='$PREFIX'\nPGUSER='$PGUSER'\nPGDB='$PGDB'\nPGHOST='$PGHOST'\nPGPORT='$PGPORT'\nKEY_NAME='$KEY_NAME'"
     if [ -n "$PGPASSWORD" ]; then
         ## NOTE THAT THIS IS SENSITIVE TO ESCAPING CHARACTERS IN PASSWORD
         CRON_ENV="$CRON_ENV\nPGPASSWORD='$PGPASSWORD'"
