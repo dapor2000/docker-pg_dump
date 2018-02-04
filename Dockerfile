@@ -8,6 +8,9 @@ RUN apt-get update && \
 ADD dump.sh /dump.sh
 RUN chmod +x /dump.sh
 
+ADD weekly.sh /weekly.sh
+RUN chmod +x /weekly.sh
+
 ADD restore.sh /restore.sh
 RUN chmod +x /restore.sh
 
@@ -15,6 +18,7 @@ ADD start.sh /start.sh
 RUN chmod +x /start.sh
 
 VOLUME /dump
+VOLUME /weekly
 VOLUME /status
 
 ENTRYPOINT ["/start.sh"]

@@ -4,6 +4,8 @@ set -e
 
 COMMAND=${1:-dump}
 CRON_SCHEDULE=${CRON_SCHEDULE:-0 1 * * *}
+WEEKLY_CRON_SCHEDULE=${WEEKLY_CRON_SCHEDULE:-0 1 * * sun}
+DELETE_WEEKLY_OLDER_THAN_DAYS=${DELETE_WEEKLY_OLDER_THAN_DAYS:-90}
 PREFIX=${PREFIX:-dump}
 PGUSER=${PGUSER:-postgres}
 PGDB=${PGDB:-postgres}
@@ -32,7 +34,12 @@ elif [[ "$COMMAND" == 'dump-cron' ]]; then
     	CRON_ENV="$CRON_ENV\nDELETE_OLDER_THAN='$DELETE_OLDER_THAN'"
     fi
 
-    echo -e "$CRON_ENV\n$CRON_SCHEDULE /dump.sh > $LOGFIFO 2>&1" | crontab -
+    if [ ! -z "$DELETE_WEEKLY_OLDER_THAN_DAYS" ]; then
+    	CRON_ENV="$CRON_ENV\nDELETE_WEEKLY_OLDER_THAN_DAYS='$DELETE_WEEKLY_OLDER_THAN_DAYS'"
+    fi
+
+    # echo -e "$CRON_ENV\n$WEEKLY_CRON_SCHEDULE /weekly.sh > $LOGFIFO 2>&1\n$CRON_ENV\n$CRON_SCHEDULE /dump.sh > $LOGFIFO 2>&1"
+    echo -e "$CRON_ENV\n$WEEKLY_CRON_SCHEDULE /weekly.sh > $LOGFIFO 2>&1\n$CRON_ENV\n$CRON_SCHEDULE /dump.sh > $LOGFIFO 2>&1" | crontab -
     if [ $ECHO_CRONFILE = true ]; then
       crontab -l
     fi
