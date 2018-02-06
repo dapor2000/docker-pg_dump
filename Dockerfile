@@ -6,6 +6,8 @@ RUN apt-get update && \
     apt-get install -y gpg && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
+RUN sed -i '/session    required     pam_loginuid.so/c\#session    required   pam_loginuid.so' /etc/pam.d/cron
+
 ADD dump.sh /dump.sh
 RUN chmod +x /dump.sh
 
