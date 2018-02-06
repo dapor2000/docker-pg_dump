@@ -19,9 +19,9 @@ else
 fi
 
 # import keys
-if [ -f /keys/backup.pub ]; then
-  gpg --import /keys/backup.pub
-fi
+# if [ -f /keys/backup.pub ]; then
+#   gpg --import /keys/backup.pub
+# fi
 
 if [[ "$COMMAND" == 'dump' ]]; then
     exec /dump.sh
@@ -45,7 +45,9 @@ elif [[ "$COMMAND" == 'dump-cron' ]]; then
     fi
 
     # echo -e "$CRON_ENV\n$WEEKLY_CRON_SCHEDULE /weekly.sh > $LOGFIFO 2>&1\n$CRON_ENV\n$CRON_SCHEDULE /dump.sh > $LOGFIFO 2>&1"
-    echo -e "$CRON_ENV\n$WEEKLY_CRON_SCHEDULE /weekly.sh > $LOGFIFO 2>&1\n$CRON_ENV\n$CRON_SCHEDULE /dump.sh > $LOGFIFO 2>&1" | crontab -
+    # echo -e "$CRON_ENV\n$WEEKLY_CRON_SCHEDULE /weekly.sh > $LOGFIFO 2>&1\n$CRON_ENV\n$CRON_SCHEDULE /dump.sh > $LOGFIFO 2>&1" > /cronfile.conf
+    echo -e "$CRON_ENV\n$CRON_SCHEDULE /dump.sh > $LOGFIFO 2>&1\n$WEEKLY_CRON_SCHEDULE /weekly.sh > $LOGFIFO 2>&1\n" > /cronfile.conf
+    crontab /cronfile.conf
     if [ $ECHO_CRONFILE = true ]; then
       crontab -l
     fi

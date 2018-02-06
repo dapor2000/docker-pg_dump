@@ -10,14 +10,14 @@ FILE="/dump/$PREFIX-$DATE.sql"
 pg_dump -h "$PGHOST" -p "$PGPORT" -U "$PGUSER" -f "$FILE" -d "$PGDB" -Fc
 gzip "$FILE"
 
-if [ -f /keys/backup.pub ]; then
-		echo "Encrypting"
-		echo gpg --verbose --output "$FILE".gz.gpg --yes --batch --encrypt --trust-model always --recipient "$KEY_NAME" "$FILE".gz
-		gpg --verbose --output "$FILE".gz.gpg --yes --batch --encrypt --trust-model always --recipient "$KEY_NAME" "$FILE".gz
-		rm "$FILE".gz
-else
-		echo "Coulding find backup key. Not Encrypting"
-fi
+# if [ -f /keys/backup.pub ]; then
+# 		echo "Encrypting"
+# 		echo gpg --verbose --output "$FILE".gz.gpg --yes --batch --encrypt --trust-model always --recipient "$KEY_NAME" "$FILE".gz
+# 		gpg --verbose --output "$FILE".gz.gpg --yes --batch --encrypt --trust-model always --recipient "$KEY_NAME" "$FILE".gz
+# 		rm "$FILE".gz
+# else
+# 		echo "Coulding find backup key. Not Encrypting"
+# fi
 
 if [ ! -z "$DELETE_OLDER_THAN" ]; then
 	echo "Deleting old backups: $DELETE_OLDER_THAN"
