@@ -19,9 +19,9 @@ else
 fi
 
 # import keys
-# if [ -f /keys/backup.pub ]; then
-#   gpg --import /keys/backup.pub
-# fi
+if [ -f /keys/backup.pub ]; then
+  gpg --import /keys/backup.pub
+fi
 
 if [[ "$COMMAND" == 'dump' ]]; then
     exec /dump.sh
