@@ -21,7 +21,7 @@ fi
 
 if [ ! -z "$DELETE_OLDER_THAN" ]; then
 	echo "Deleting old backups: $DELETE_OLDER_THAN"
-	find /dump/* -mmin "+$DELETE_OLDER_THAN" -exec rm {} \;
+	find /dump/$PREFIX-* -mmin "+$DELETE_OLDER_THAN" -exec rm {} \;
 fi
 
 LATEST_BACKUP_DATE=$(date +%Y-%m-%dT%H:%M:%S%z)
