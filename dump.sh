@@ -8,7 +8,10 @@ DATE=$(date +%Y%m%d_%H%M%S)
 FILE="/dump/$PREFIX-$DATE.sql"
 # echo pg_dump -h "$PGHOST" -p "$PGPORT" -U "$PGUSER" -f "$FILE" -d "$PGDB" -Fc
 pg_dump -h "$PGHOST" -p "$PGPORT" -U "$PGUSER" -f "$FILE" -d "$PGDB" -Fc
+if [ -z "$NO_ZIP" ]; then
+echo "Zipping Backup"
 gzip "$FILE"
+fi
 
 if [ -f /keys/backup.pub ]; then
 		echo "Encrypting"
